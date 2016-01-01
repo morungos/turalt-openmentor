@@ -34,4 +34,8 @@
 	<bean id="transactionFilter" class="com.turalt.openmentor.filter.TransactionFilter">
 		<property name="transactionManager" ref="transactionManager"/>
 	</bean>
+	
+	<bean id="courseInfoRepository" class="com.turalt.openmentor.repository.impl.SimpleCourseInfoRepository">
+        <property name="template" ref="queryDslJdbcTemplate"/>
+    </bean>
 </beans>
