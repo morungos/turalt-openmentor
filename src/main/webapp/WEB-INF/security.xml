@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                    http://www.springframework.org/schema/beans/spring-beans.xsd
+	                    http://www.springframework.org/schema/util
+	                    http://www.springframework.org/schema/util/spring-util.xsd">
+	
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager">
+    </bean>
+    
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="realms" ref="securityRealms" />
+    </bean>
+    
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    
+    <bean id="authenticationRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+        <property name="dataSource" ref="dataSource" />
+        <property name="permissionsLookupEnabled" value="false" />
+        <property name="authenticationQuery">
+            <value>
+                SELECT HASH FROM USER WHERE USERNAME = LOWER(?)
+            </value>
+        </property>
+    </bean>
+
+    <util:list id="securityRealms" value-type="org.apache.shiro.realm.Realm">
+        <ref bean="authenticationRealm" />
+    </util:list>
+    
+    <bean id="sessionAccessFilter" class="com.turalt.openmentor.security.SessionAccessFilter">
+        <property name="authcScheme" value="session" />
+        <property name="prompt" value="Please log in using your database credentials." />
+    </bean>
+
+    <bean id="sessionAuthenticationFilter" class="com.turalt.openmentor.security.SessionAuthenticationFilter">
+        <property name="loginUrl" value="/api/authentication/login" />
+        <property name="successUrl" value="/api/courses" />
+        <property name="authcScheme" value="session" />
+    </bean>
+
+    <bean id="passwordMatcher" class="com.turalt.openmentor.security.BcryptPasswordMatcher">
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        
+        <property name="filters">
+            <util:map>
+                <entry key="sessionAuthentication" value-ref="sessionAuthenticationFilter" />
+                <entry key="sessionAccess" value-ref="sessionAccessFilter" />
+            </util:map>
+        </property>
+        
+        <property name="filterChainDefinitions">
+            <value>
+                /api/authentication/login = sessionAuthentication
+                /api/authentication/logout = logout
+                /api/** = sessionAccess
+                /events/** = sessionAccess
+                /** = anon
+            </value>
+        </property>
+    </bean>
+
+</beans>

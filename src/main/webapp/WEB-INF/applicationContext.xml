@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                    http://www.springframework.org/schema/beans/spring-beans.xsd
+	                    http://www.springframework.org/schema/util
+	                    http://www.springframework.org/schema/util/spring-util.xsd">
+                        
+    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location">
+            <bean class="org.springframework.core.io.UrlResource">
+                <constructor-arg>
+                    <bean class="org.springframework.jndi.JndiObjectFactoryBean">
+                        <property name="jndiName" value="java:comp/env/openmentorProperties" />
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+	                    
+	<bean id="openmentorComponent" class="org.restlet.ext.spring.SpringComponent">
+		<property name="defaultTarget" ref="openmentorApplication" />
+        <property name="logService" ref="logService" />
+	</bean>
+	
+    <bean id="logService" class="org.restlet.service.LogService">
+        <property name="loggerName" value="http" />
+    </bean>
+    
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    	<property name="targetObject"><value>#{openmentorComponent.getClients()}</value></property>
+    	<property name="targetMethod"><value>add</value></property>
+    	<property name="arguments">
+	        <list>
+	            <value type="org.restlet.data.Protocol">CLAP</value>
+	        </list>
+	    </property>
+    </bean>
+
+	<bean id="openmentorComponentChildContext" class="org.restlet.Context"> 
+		<lookup-method name="createChildContext" bean="openmentorComponent.context" /> 
+	</bean>
+	
+	<bean id="openmentorApplication" class="com.turalt.openmentor.application.OpenMentorApplication">
+		<property name="inboundRoot" ref="router" />
+	</bean>
+
+	<bean id="router" class="org.restlet.ext.spring.SpringRouter">
+		<constructor-arg ref="openmentorComponentChildContext" />
+		<property name="attachments">
+	        <map>
+ 	            <entry key="/api" value-ref="apiRouter" />
+ 	            <entry key="" value-ref="staticsRewrite" />
+	        </map>
+	    </property>
+    </bean>
+    
+    <bean id="staticsRewrite" class="com.turalt.openmentor.restlets.DefaultingFilterFactoryBean">
+		<property name="component" ref="openmentorComponent" />
+		<property name="next" ref="staticsDirectory" />
+		<property name="defaultPath" value="/index.html" />
+    </bean>
+    
+	<bean id="staticsDirectory" class="com.turalt.openmentor.restlets.DirectoryFactoryBean">
+		<property name="component" ref="openmentorComponent" />
+		<property name="resourceRoot" value="clap://thread/client" />
+	</bean>
+	
+</beans>
