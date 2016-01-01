@@ -1,5 +1,7 @@
 package com.turalt.openmentor.repository.impl;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,9 +13,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.turalt.openmentor.dto.Course;
 import com.turalt.openmentor.service.CurrentUserService;
 
 import static org.easymock.EasyMock.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:**/testContextDatabase.xml" })
@@ -67,5 +71,118 @@ public class SimpleCourseInfoRepositoryTest {
 		
 		Long courses = courseInfoRepository.getCourseCount();
 		Assert.assertEquals(6, courses.intValue());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetCourses() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Course> courses = courseInfoRepository.getCourses();
+		Assert.assertEquals(4, courses.size());
+		
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2006"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2007"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM3010"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("AA1003"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetCoursesUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Course> courses = courseInfoRepository.getCourses();
+		Assert.assertEquals(5, courses.size());
+		
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2006"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2007"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM3010"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("AA1003"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CMM511"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetCoursesAdministrator() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Course> courses = courseInfoRepository.getCourses();
+		Assert.assertEquals(6, courses.size());
+		
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2006"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2007"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM3010"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("AA1003"))));
+		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CMM511"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFindCourse() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Course found = courseInfoRepository.findCourse("CM2006");
+		Assert.assertThat(found, hasProperty("identifier", equalTo("CM2006")));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFindCourseMissing() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Course found = courseInfoRepository.findCourse("XM2006");
+		Assert.assertNull(found);
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFindCourseOtherUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Course found = courseInfoRepository.findCourse("CMM511");
+		Assert.assertNull(found);
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFindCourseUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Course found = courseInfoRepository.findCourse("CM2006");
+		Assert.assertThat(found, hasProperty("identifier", equalTo("CM2006")));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFindCourseUserOwned() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Course found = courseInfoRepository.findCourse("CMM511");
+		Assert.assertThat(found, hasProperty("identifier", equalTo("CMM511")));
 	}
 }

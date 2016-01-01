@@ -48,9 +48,8 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 	public void setCurrentUserService(CurrentUserService currentUserService) {
 		this.currentUserService = currentUserService;
 	}
-
-	@Override
-	public List<Course> getCourses() {
+	
+	private SQLQuery getCourseQuery() {
 		SQLQuery sq = template.newSqlQuery().from(course);
 		
 		// If in training mode, use the owner to filter out non-applicable courses.
@@ -59,34 +58,34 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 			sq = sq.leftJoin(user).on(user.id.eq(course.ownerId))
 					.where(user.id.isNull().or(user.username.eq(username)));
 		}
-		
+
+		return sq;
+	}
+
+	@Override
+	public List<Course> getCourses() {
+		SQLQuery sq = getCourseQuery();
 		return template.query(sq, course);
 	}
 
 	@Override
 	public Long getCourseCount() {
-		SQLQuery sq = template.newSqlQuery().from(course);
-		
-		// If in training mode, use the owner to filter out non-applicable courses.
-		if (trainingMode && ! currentUserService.isAdministrator()) {
-			String username = currentUserService.getCurrentUserName();
-			sq = sq.leftJoin(user).on(user.id.eq(course.ownerId))
-					.where(user.id.isNull().or(user.username.eq(username)));
-		}
-		
+		SQLQuery sq = getCourseQuery();
 		return template.count(sq);
 	}
 
 	@Override
 	public Course findCourse(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLQuery sq =  getCourseQuery();
+		sq = sq.where(course.identifier.eq(identifier));		
+		return template.queryForObject(sq, course);
 	}
 
 	@Override
 	public List<Course> findCoursesLike(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLQuery sq =  getCourseQuery();
+		sq = sq.where(course.identifier.like(identifier));
+		return template.query(sq, course);
 	}
 
 	@Override

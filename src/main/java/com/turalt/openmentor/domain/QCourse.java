@@ -18,7 +18,7 @@ public class QCourse extends RelationalPathBase<Course> {
 
 	public final NumberPath<Integer> id = createNumber("id", Integer.class);
 	
-	public final NumberPath<Integer> ownerId = createNumber("id", Integer.class);
+	public final NumberPath<Integer> ownerId = createNumber("ownerId", Integer.class);
 
     public final StringPath identifier = createString("identifier");
 
