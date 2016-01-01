@@ -83,7 +83,6 @@ gulp.task 'clean-css', (cb) ->
 
 gulp.task 'styles', ['clean-css'], () ->
   lessPaths = [
-    path.join(__dirname, 'src', 'main', 'client', 'styles')
     path.join(__dirname, 'src', 'main', 'client', 'less')
     path.join(__dirname, 'bower_components', 'bootstrap', 'less')
   ]

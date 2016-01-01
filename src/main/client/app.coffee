@@ -13,11 +13,14 @@ angular
     $stateProvider
       .state 'home',
         controller: 'HomeController'
-        templateUrl: '/tracker/home/home.html'
+        templateUrl: '/openmentor/home/home.html'
         url: '/'
+      .state 'help',
+        templateUrl: '/openmentor/pages/help.html'
+        url: '/help'
       .state 'error',
         controller: 'ErrorController'
-        templateUrl: '/tracker/error/error.html'
+        templateUrl: '/openmentor/error/error.html'
         url: '/error'
         params: {
           message: "An error"
