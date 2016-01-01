@@ -8,6 +8,10 @@ import com.turalt.openmentor.dto.Person;
 
 public interface CourseInfoRepository {
 	
+	public static final String STUDENT_ROLE = "student";
+	
+	public static final String TUTOR_ROLE = "tutor";
+	
 	/**
 	 * Returns the a list of courses. 
 	 * @return the list of courses

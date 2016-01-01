@@ -18,7 +18,7 @@ public class QPerson extends RelationalPathBase<Person> {
 
 	public final NumberPath<Integer> id = createNumber("id", Integer.class);
 	
-	public final StringPath owner = createString("owner");
+	public final NumberPath<Integer> ownerId = createNumber("ownerId", Integer.class);
 
 	public final NumberPath<Integer> role = createNumber("role", Integer.class);
 
@@ -35,7 +35,7 @@ public class QPerson extends RelationalPathBase<Person> {
 
 	public void addMetadata() {
         addMetadata(id, ColumnMetadata.named("ID").withIndex(1).ofType(Types.INTEGER).withSize(10).notNull());
-        addMetadata(owner, ColumnMetadata.named("OWNER").withIndex(2).ofType(Types.VARCHAR).withSize(24));
+        addMetadata(ownerId, ColumnMetadata.named("OWNER_ID").withIndex(2).ofType(Types.INTEGER).withSize(10));
         addMetadata(role, ColumnMetadata.named("ROLE").withIndex(3).ofType(Types.INTEGER).withSize(10));
         addMetadata(identifier, ColumnMetadata.named("IDENTIFIER").withIndex(4).ofType(Types.VARCHAR).withSize(24));
         addMetadata(givenName, ColumnMetadata.named("GIVEN_NAME").withIndex(5).ofType(Types.VARCHAR).withSize(24));

@@ -6,7 +6,7 @@ public class Person {
 
     private Integer id;
 
-	private String owner;
+	private Integer ownerId;
 	
 	private Integer role;
 	
@@ -41,17 +41,17 @@ public class Person {
 	}
 
 	/**
-	 * @return the owner
+	 * @return the ownerId
 	 */
-	public String getOwner() {
-		return owner;
+	public Integer getOwnerId() {
+		return ownerId;
 	}
 
 	/**
-	 * @param owner the owner to set
+	 * @param ownerId the ownerId to set
 	 */
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setOwnerId(Integer ownerId) {
+		this.ownerId = ownerId;
 	}
 
 	/**
@@ -122,5 +122,32 @@ public class Person {
 	 */
 	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
+	}
+	
+	/**
+	 * Defines a standard equality test
+	 */
+	@Override
+	public boolean equals(Object o) {
+	    if (o == null)              return false;
+	    if (!(o instanceof Course)) return false;
+
+	    Person other = (Person) o;
+	    if (this.id != other.id)                          return false;
+	    if (this.ownerId != other.ownerId)                return false;
+	    if (! this.identifier.equals(other.identifier))   return false;
+	    if (! this.role.equals(other.role))               return false;
+	    if (! this.givenName.equals(other.givenName))     return false;
+	    if (! this.familyName.equals(other.familyName))   return false;
+
+	    return true;
+	}
+	
+	/**
+	 * Defines a standard hashCode
+	 */
+	@Override
+	public int hashCode() {
+		return (this.id == null ? 1 : this.id) * this.identifier.hashCode();
 	}
 }

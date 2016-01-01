@@ -1,6 +1,9 @@
 package com.turalt.openmentor.repository.impl;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import com.turalt.openmentor.repository.CourseInfoRepository;
 import com.turalt.openmentor.service.CurrentUserService;
 
 import static com.turalt.openmentor.domain.QCourse.course;
+import static com.turalt.openmentor.domain.QPerson.person;
 import static com.turalt.openmentor.domain.QUser.user;
 
 public class SimpleCourseInfoRepository implements CourseInfoRepository {
@@ -26,6 +30,24 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 	private boolean trainingMode = true;
 	
 	private CurrentUserService currentUserService;
+	
+	private static final Map<String, Integer> roleCodes = new HashMap<String, Integer>();
+	
+	private static final Map<Integer, String> roleCodeRoles = new HashMap<Integer, String>();
+
+	static {
+		
+		// Define the main associations
+		roleCodes.put(CourseInfoRepository.STUDENT_ROLE, 1);
+		roleCodes.put(CourseInfoRepository.TUTOR_ROLE, 2);
+		
+		// And now use this to make a reverse map
+		Iterator<Map.Entry<String, Integer>> it = roleCodes.entrySet().iterator();
+		while (it.hasNext()) {
+	        Map.Entry<String, Integer> pair = it.next();
+	        roleCodeRoles.put(pair.getValue(), pair.getKey());
+		}
+	}
 		
 	@Required
     public void setTemplate(QueryDslJdbcTemplate template) {
@@ -62,6 +84,21 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 		return sq;
 	}
 
+	private SQLQuery getPersonQuery(String role) {
+		SQLQuery sq = template.newSqlQuery().from(person);
+		
+		// If in training mode, use the owner to filter out non-applicable courses.
+		if (trainingMode && ! currentUserService.isAdministrator()) {
+			String username = currentUserService.getCurrentUserName();
+			sq = sq.leftJoin(user).on(user.id.eq(person.ownerId))
+					.where(user.id.isNull().or(user.username.eq(username)));
+		}
+		
+		sq = sq.where(person.role.eq(roleCodes.get(role)));
+
+		return sq;
+	}
+
 	@Override
 	public List<Course> getCourses() {
 		SQLQuery sq = getCourseQuery();
@@ -90,14 +127,14 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 
 	@Override
 	public List<Person> getPeople(String role) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLQuery sq =  getPersonQuery(role);
+		return template.query(sq, person);
 	}
 
 	@Override
 	public Long getPersonCount(String role) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLQuery sq =  getPersonQuery(role);
+		return template.count(sq);
 	}
 
 	@Override

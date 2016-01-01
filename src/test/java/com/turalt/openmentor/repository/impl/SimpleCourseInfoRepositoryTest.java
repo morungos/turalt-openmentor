@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.turalt.openmentor.dto.Course;
+import com.turalt.openmentor.dto.Person;
+import com.turalt.openmentor.repository.CourseInfoRepository;
 import com.turalt.openmentor.service.CurrentUserService;
 
 import static org.easymock.EasyMock.*;
@@ -184,5 +186,167 @@ public class SimpleCourseInfoRepositoryTest {
 		
 		Course found = courseInfoRepository.findCourse("CMM511");
 		Assert.assertThat(found, hasProperty("identifier", equalTo("CMM511")));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetStudentCount() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Long people = courseInfoRepository.getPersonCount(CourseInfoRepository.STUDENT_ROLE);
+		Assert.assertEquals(7, people.intValue());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetTutorCount() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Long people = courseInfoRepository.getPersonCount(CourseInfoRepository.TUTOR_ROLE);
+		Assert.assertEquals(3, people.intValue());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetStudentCountUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Long people = courseInfoRepository.getPersonCount(CourseInfoRepository.STUDENT_ROLE);
+		Assert.assertEquals(8, people.intValue());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetTutorCountUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Long people = courseInfoRepository.getPersonCount(CourseInfoRepository.TUTOR_ROLE);
+		Assert.assertEquals(4, people.intValue());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetStudentCountAdministrator() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Long people = courseInfoRepository.getPersonCount(CourseInfoRepository.STUDENT_ROLE);
+		Assert.assertEquals(9, people.intValue());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetTutorCountAdministrator() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		Long people = courseInfoRepository.getPersonCount(CourseInfoRepository.TUTOR_ROLE);
+		Assert.assertEquals(5, people.intValue());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetStudents() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE);
+		Assert.assertEquals(7, people.size());
+
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000231"))));
+		Assert.assertThat(people, not(hasItem(hasProperty("identifier", equalTo("09000238")))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetTutors() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE);
+		Assert.assertEquals(3, people.size());
+
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000061"))));
+		Assert.assertThat(people, not(hasItem(hasProperty("identifier", equalTo("M4000064")))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetStudentsUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE);
+		Assert.assertEquals(8, people.size());
+
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000231"))));
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000238"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetTutorsUser() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE);
+		Assert.assertEquals(4, people.size());
+
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000061"))));
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000064"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetStudentsAdministrator() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE);
+		Assert.assertEquals(9, people.size());
+
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000231"))));
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000238"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetTutorsAdministrator() {
+		
+		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
+		courseInfoRepository.setCurrentUserService(currentUserService);
+		
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE);
+		Assert.assertEquals(5, people.size());
+
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000061"))));
+		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000064"))));
 	}
 }
