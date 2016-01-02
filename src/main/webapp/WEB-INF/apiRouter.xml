@@ -17,7 +17,16 @@
 		<constructor-arg ref="router" />
 		<property name="attachments">
 	        <map>
+	        	<entry key="courses">
+	            	<bean class="org.restlet.ext.spring.SpringFinder">
+	            		<lookup-method name="create" bean="courseListResource" />
+	            	</bean>
+	            </entry>
 	        </map>
 	    </property>
+	</bean>
+	
+	<bean id="courseListResource" class="com.turalt.openmentor.resource.CourseListResource" scope="prototype">
+		<property name="repository" ref="courseInfoRepository"/>
 	</bean>
 </beans>
