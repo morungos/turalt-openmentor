@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.turalt.openmentor.dto.Course;
+import com.turalt.openmentor.dto.Pager;
 import com.turalt.openmentor.dto.Person;
 import com.turalt.openmentor.repository.CourseInfoRepository;
 import com.turalt.openmentor.service.CurrentUserService;
@@ -83,7 +84,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Course> courses = courseInfoRepository.getCourses();
+		Pager pager = new Pager();
+		List<Course> courses = courseInfoRepository.getCourses(pager);
 		Assert.assertEquals(4, courses.size());
 		
 		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2006"))));
@@ -100,7 +102,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Course> courses = courseInfoRepository.getCourses();
+		Pager pager = new Pager();
+		List<Course> courses = courseInfoRepository.getCourses(pager);
 		Assert.assertEquals(5, courses.size());
 		
 		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2006"))));
@@ -118,7 +121,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Course> courses = courseInfoRepository.getCourses();
+		Pager pager = new Pager();
+		List<Course> courses = courseInfoRepository.getCourses(pager);
 		Assert.assertEquals(6, courses.size());
 		
 		Assert.assertThat(courses, hasItem(hasProperty("identifier", equalTo("CM2006"))));
@@ -268,7 +272,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE);
+		Pager pager = new Pager();
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE, pager);
 		Assert.assertEquals(7, people.size());
 
 		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000231"))));
@@ -283,7 +288,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(false, "test");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE);
+		Pager pager = new Pager();
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE, pager);
 		Assert.assertEquals(3, people.size());
 
 		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000061"))));
@@ -298,7 +304,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE);
+		Pager pager = new Pager();
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE, pager);
 		Assert.assertEquals(8, people.size());
 
 		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000231"))));
@@ -313,7 +320,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(false, "stuart");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE);
+		Pager pager = new Pager();
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE, pager);
 		Assert.assertEquals(4, people.size());
 
 		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000061"))));
@@ -328,7 +336,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE);
+		Pager pager = new Pager();
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.STUDENT_ROLE, pager);
 		Assert.assertEquals(9, people.size());
 
 		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("09000231"))));
@@ -343,7 +352,8 @@ public class SimpleCourseInfoRepositoryTest {
 		CurrentUserService currentUserService = mockCurrentUserService(true, "admin");
 		courseInfoRepository.setCurrentUserService(currentUserService);
 		
-		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE);
+		Pager pager = new Pager();
+		List<Person> people = courseInfoRepository.getPeople(CourseInfoRepository.TUTOR_ROLE, pager);
 		Assert.assertEquals(5, people.size());
 
 		Assert.assertThat(people, hasItem(hasProperty("identifier", equalTo("M4000061"))));

@@ -13,6 +13,7 @@ import org.springframework.data.jdbc.query.QueryDslJdbcTemplate;
 import com.mysema.query.sql.SQLQuery;
 import com.turalt.openmentor.dto.Assignment;
 import com.turalt.openmentor.dto.Course;
+import com.turalt.openmentor.dto.Pager;
 import com.turalt.openmentor.dto.Person;
 import com.turalt.openmentor.repository.CourseInfoRepository;
 import com.turalt.openmentor.service.CurrentUserService;
@@ -100,7 +101,7 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 	}
 
 	@Override
-	public List<Course> getCourses() {
+	public List<Course> getCourses(Pager pager) {
 		SQLQuery sq = getCourseQuery();
 		return template.query(sq, course);
 	}
@@ -119,14 +120,7 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 	}
 
 	@Override
-	public List<Course> findCoursesLike(String identifier) {
-		SQLQuery sq =  getCourseQuery();
-		sq = sq.where(course.identifier.like(identifier));
-		return template.query(sq, course);
-	}
-
-	@Override
-	public List<Person> getPeople(String role) {
+	public List<Person> getPeople(String role, Pager pager) {
 		SQLQuery sq =  getPersonQuery(role);
 		return template.query(sq, person);
 	}
@@ -144,13 +138,7 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 	}
 
 	@Override
-	public List<Person> findPeopleLike(String role, String identifier) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Assignment> getAssignments(Course course) {
+	public List<Assignment> getAssignments(Course course, Pager pager) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -163,12 +151,6 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 
 	@Override
 	public Assignment findAssignment(Course course, String code) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Assignment> findAssignmentsLike(Course course, String code) {
 		// TODO Auto-generated method stub
 		return null;
 	}

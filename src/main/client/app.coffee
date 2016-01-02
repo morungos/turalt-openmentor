@@ -14,6 +14,8 @@ angular
       .state 'home',
         controller: 'HomeController'
         templateUrl: '/openmentor/home/home.html'
+      .state 'home.default',
+        templateUrl: '/openmentor/home/overview.html',
         url: '/'
       .state 'help',
         templateUrl: '/openmentor/pages/help.html'
