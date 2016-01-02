@@ -13,7 +13,7 @@ public class RequestAttributes {
 	 * @param request
 	 * @return the request pager
 	 */
-	public static Pager getRequestCasePager(Request request) {
+	public static Pager getRequestPager(Request request) {
 		return (Pager) request.getAttributes().get(RequestAttributes.PAGER_ATTRIBUTE);
 	}
 
@@ -22,7 +22,7 @@ public class RequestAttributes {
 	 * @param request
 	 * @param q
 	 */
-	public static void setRequestCasePager(Request request, Pager q) {
+	public static void setRequestPager(Request request, Pager q) {
 		request.getAttributes().put(RequestAttributes.PAGER_ATTRIBUTE, q);
 	}
 

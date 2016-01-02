@@ -39,7 +39,7 @@ public class PagerExtractorTest {
 		Response response = new Response(request);
 		extractor.handle(request, response);
 		
-		Pager pager = RequestAttributes.getRequestCasePager(request);
+		Pager pager = RequestAttributes.getRequestPager(request);
 		assertNotNull(pager);
 		
 		assertNotNull(pager.getLimit());
@@ -57,7 +57,7 @@ public class PagerExtractorTest {
 		Response response = new Response(request);
 		extractor.handle(request, response);
 		
-		Pager pager = RequestAttributes.getRequestCasePager(request);
+		Pager pager = RequestAttributes.getRequestPager(request);
 		assertNotNull(pager);
 		
 		assertNull(pager.getLimit());

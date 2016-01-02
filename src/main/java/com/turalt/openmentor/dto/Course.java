@@ -1,5 +1,7 @@
 package com.turalt.openmentor.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Course {
 
     private Integer id;
@@ -17,6 +19,7 @@ public class Course {
 	/**
 	 * @return the id
 	 */
+	@JsonProperty
 	public Integer getId() {
 		return id;
 	}
@@ -45,6 +48,7 @@ public class Course {
 	/**
 	 * @return the identifier
 	 */
+	@JsonProperty
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -59,6 +63,7 @@ public class Course {
 	/**
 	 * @return the title
 	 */
+	@JsonProperty
 	public String getTitle() {
 		return title;
 	}

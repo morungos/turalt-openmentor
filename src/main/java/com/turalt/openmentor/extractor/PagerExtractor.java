@@ -32,7 +32,7 @@ public class PagerExtractor extends Extractor {
 			pager.setLimit(new Integer((String) attributes.get("limit")));
 		}
 
-		RequestAttributes.setRequestCasePager(request, pager);
+		RequestAttributes.setRequestPager(request, pager);
 
 		return CONTINUE;
 	}

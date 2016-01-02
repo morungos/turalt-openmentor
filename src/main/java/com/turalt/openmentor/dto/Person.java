@@ -2,6 +2,8 @@ package com.turalt.openmentor.dto;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Person {
 
     private Integer id;
@@ -29,6 +31,7 @@ public class Person {
 	/**
 	 * @return the id
 	 */
+    @JsonProperty
 	public Integer getId() {
 		return id;
 	}
@@ -43,6 +46,7 @@ public class Person {
 	/**
 	 * @return the ownerId
 	 */
+	@JsonProperty
 	public Integer getOwnerId() {
 		return ownerId;
 	}
@@ -71,6 +75,7 @@ public class Person {
 	/**
 	 * @return the identifier
 	 */
+	@JsonProperty
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -85,6 +90,7 @@ public class Person {
 	/**
 	 * @return the givenName
 	 */
+	@JsonProperty
 	public String getGivenName() {
 		return givenName;
 	}
@@ -99,6 +105,7 @@ public class Person {
 	/**
 	 * @return the familyName
 	 */
+	@JsonProperty
 	public String getFamilyName() {
 		return familyName;
 	}
