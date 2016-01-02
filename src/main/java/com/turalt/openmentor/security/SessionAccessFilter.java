@@ -34,7 +34,7 @@ public class SessionAccessFilter extends UserFilter {
     /**
      * Non-standard header, used to transmit an optional prompt to the client.
      */
-    protected static final String PROMPT_HEADER = "X-Tracker-Login-Prompt";
+    protected static final String PROMPT_HEADER = "X-Login-Prompt";
 
     /**
      * The authcScheme to look for in the <code>Authorization</code> header, defaults to <code>session</code>

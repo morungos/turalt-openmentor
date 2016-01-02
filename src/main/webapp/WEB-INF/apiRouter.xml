@@ -10,6 +10,10 @@
 	                    
 	<bean id="apiRouter" class="com.turalt.openmentor.restlets.CustomSpringSessionAuthenticator">
 		<constructor-arg ref="router" />
+		<property name="next" ref="pagerExtractor"/>
+	</bean>
+	
+	<bean id="pagerExtractor" class="com.turalt.openmentor.extractor.PagerExtractor">
 		<property name="next" ref="apiRoot"/>
 	</bean>
 
@@ -17,7 +21,7 @@
 		<constructor-arg ref="router" />
 		<property name="attachments">
 	        <map>
-	        	<entry key="courses">
+	        	<entry key="/courses">
 	            	<bean class="org.restlet.ext.spring.SpringFinder">
 	            		<lookup-method name="create" bean="courseListResource" />
 	            	</bean>

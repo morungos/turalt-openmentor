@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.jdbc.query.QueryDslJdbcTemplate;
 
@@ -69,12 +70,15 @@ public class SimpleCourseInfoRepository implements CourseInfoRepository {
 	 * @param currentUserService the new CurrentUserService
 	 */
 	public void setCurrentUserService(CurrentUserService currentUserService) {
+		logger.debug("Initializing currentUserService: {}", currentUserService);
 		this.currentUserService = currentUserService;
 	}
 	
 	private SQLQuery getCourseQuery() {
 		SQLQuery sq = template.newSqlQuery().from(course);
 		
+		logger.debug("currentUserService: {}", currentUserService);
+
 		// If in training mode, use the owner to filter out non-applicable courses.
 		if (trainingMode && ! currentUserService.isAdministrator()) {
 			String username = currentUserService.getCurrentUserName();

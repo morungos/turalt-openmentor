@@ -11,3 +11,16 @@ angular
 
   .controller 'HomeController', () ->
     'use strict'
+
+
+  .controller 'CoursesController', Array '$scope', '$http', ($scope, $http) ->
+    'use strict'
+
+    $scope.data = undefined
+
+    $http
+      .get('/api/courses')
+      .success (response) ->
+        $scope.data = response
+      .error (response) ->
+        console.log "Error", response

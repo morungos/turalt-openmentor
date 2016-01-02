@@ -21,6 +21,7 @@
     <bean id="authenticationRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
         <property name="dataSource" ref="dataSource" />
         <property name="permissionsLookupEnabled" value="false" />
+        <property name="credentialsMatcher" ref="passwordMatcher" />
         <property name="authenticationQuery">
             <value>
                 SELECT HASH FROM USER WHERE USERNAME = LOWER(?)

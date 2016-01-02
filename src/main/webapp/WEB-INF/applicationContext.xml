@@ -68,4 +68,7 @@
 		<property name="resourceRoot" value="clap://thread/client" />
 	</bean>
 	
+	<bean id="currentUserService" class="com.turalt.openmentor.service.impl.ShiroCurrentUserService">
+	</bean>
+	
 </beans>

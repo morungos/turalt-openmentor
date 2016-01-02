@@ -17,9 +17,18 @@ angular
       .state 'home.default',
         templateUrl: '/openmentor/home/overview.html',
         url: '/'
+      .state 'home.courses',
+        controller: 'CoursesController',
+        templateUrl: '/openmentor/home/courses.html',
+        url: '/courses'
       .state 'help',
         templateUrl: '/openmentor/pages/help.html'
         url: '/help'
+      .state 'login',
+        controller: 'LoginController'
+        templateUrl: '/openmentor/authentication/login.html'
+        params: { challenge : { value: "default" }, prompt : { value : "default" }}
+        url: '/login'
       .state 'error',
         controller: 'ErrorController'
         templateUrl: '/openmentor/error/error.html'
