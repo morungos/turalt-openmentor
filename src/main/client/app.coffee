@@ -33,6 +33,9 @@ angular
         controller: 'UsersController',
         templateUrl: '/openmentor/home/users.html',
         url: '/users'
+      .state 'home.upload',
+        templateUrl: '/openmentor/home/upload.html',
+        url: '/upload'
       .state 'help',
         templateUrl: '/openmentor/pages/help.html'
         url: '/help'
