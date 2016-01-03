@@ -26,6 +26,16 @@
 	            		<lookup-method name="create" bean="courseListResource" />
 	            	</bean>
 	            </entry>
+	        	<entry key="/students">
+	            	<bean class="org.restlet.ext.spring.SpringFinder">
+	            		<lookup-method name="create" bean="studentListResource" />
+	            	</bean>
+	            </entry>
+	        	<entry key="/tutors">
+	            	<bean class="org.restlet.ext.spring.SpringFinder">
+	            		<lookup-method name="create" bean="tutorListResource" />
+	            	</bean>
+	            </entry>
 	        </map>
 	    </property>
 	</bean>
@@ -33,4 +43,13 @@
 	<bean id="courseListResource" class="com.turalt.openmentor.resource.CourseListResource" scope="prototype">
 		<property name="repository" ref="courseInfoRepository"/>
 	</bean>
+
+	<bean id="studentListResource" class="com.turalt.openmentor.resource.StudentListResource" scope="prototype">
+		<property name="repository" ref="courseInfoRepository"/>
+	</bean>
+
+	<bean id="tutorListResource" class="com.turalt.openmentor.resource.TutorListResource" scope="prototype">
+		<property name="repository" ref="courseInfoRepository"/>
+	</bean>
+
 </beans>

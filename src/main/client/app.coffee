@@ -21,6 +21,14 @@ angular
         controller: 'CoursesController',
         templateUrl: '/openmentor/home/courses.html',
         url: '/courses'
+      .state 'home.students',
+        controller: 'StudentsController',
+        templateUrl: '/openmentor/home/students.html',
+        url: '/students'
+      .state 'home.tutors',
+        controller: 'TutorsController',
+        templateUrl: '/openmentor/home/tutors.html',
+        url: '/tutors'
       .state 'help',
         templateUrl: '/openmentor/pages/help.html'
         url: '/help'

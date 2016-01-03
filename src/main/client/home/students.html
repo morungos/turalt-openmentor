@@ -1,0 +1,18 @@
+<h2>Students</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Student Identifier</th>
+      <th>Student Name</th>
+		  <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="person in data.people">
+      <td>{{person.identifier}}</td>
+      <td>{{person.givenName}} {{person.familyName}}</td>
+      <td></th>
+    </tr>
+  </tbody>
+</table>

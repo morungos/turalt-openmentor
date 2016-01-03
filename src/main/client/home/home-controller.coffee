@@ -24,3 +24,29 @@ angular
         $scope.data = response
       .error (response) ->
         console.log "Error", response
+
+
+  .controller 'StudentsController', Array '$scope', '$http', ($scope, $http) ->
+    'use strict'
+
+    $scope.data = undefined
+
+    $http
+      .get('/api/students')
+      .success (response) ->
+        $scope.data = response
+      .error (response) ->
+        console.log "Error", response
+
+
+  .controller 'TutorsController', Array '$scope', '$http', ($scope, $http) ->
+    'use strict'
+
+    $scope.data = undefined
+
+    $http
+      .get('/api/tutors')
+      .success (response) ->
+        $scope.data = response
+      .error (response) ->
+        console.log "Error", response
