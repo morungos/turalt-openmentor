@@ -38,4 +38,9 @@
 	<bean id="courseInfoRepository" class="com.turalt.openmentor.repository.impl.SimpleCourseInfoRepository">
         <property name="template" ref="queryDslJdbcTemplate"/>
     </bean>
+    
+    <bean id="userRepository" class="com.turalt.openmentor.repository.impl.SimpleUserRepository">
+		<property name="template" ref="queryDslJdbcTemplate"/>
+	</bean>
+    
 </beans>

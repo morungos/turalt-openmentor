@@ -21,11 +21,9 @@ public class QUser extends RelationalPathBase<User> {
 
 	public final StringPath username = createString("username");
 	
-	public final BooleanPath value = createBoolean("administrator");
+	public final BooleanPath administrator = createBoolean("administrator");
 
 	public final StringPath email = createString("email");
-
-	public final StringPath displayName = createString("displayName");
 
 	public QUser(String variable) {
         super(User.class, forVariable(variable), "null", "USER");
@@ -35,8 +33,7 @@ public class QUser extends RelationalPathBase<User> {
 	public void addMetadata() {
         addMetadata(id, ColumnMetadata.named("ID").withIndex(1).ofType(Types.INTEGER).withSize(10).notNull());
         addMetadata(username, ColumnMetadata.named("USERNAME").withIndex(2).ofType(Types.VARCHAR).withSize(64));
-        addMetadata(value, ColumnMetadata.named("ADMINISTRATOR").withIndex(3).ofType(Types.BIT));
+        addMetadata(administrator, ColumnMetadata.named("ADMINISTRATOR").withIndex(3).ofType(Types.BIT));
         addMetadata(email, ColumnMetadata.named("EMAIL").withIndex(4).ofType(Types.VARCHAR).withSize(255));
-        addMetadata(displayName, ColumnMetadata.named("DISPLAY_NAME").withIndex(5).ofType(Types.VARCHAR).withSize(255));
 	}
 }

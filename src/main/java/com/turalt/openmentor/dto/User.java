@@ -9,15 +9,15 @@ import org.apache.shiro.subject.Subject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
+	
+	private Integer id;
 
 	private String username;
 	
 	private Boolean administrator = false;
 	
 	private String email;
-	
-	private String displayName;
-	
+		
 	public User() { 
 		this(SecurityUtils.getSubject());
 	}
@@ -52,6 +52,14 @@ public class User {
 		}
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	@JsonProperty
 	public String getUsername() {
 		return username;
@@ -83,20 +91,5 @@ public class User {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	/**
-	 * @return the displayName
-	 */
-	@JsonProperty
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	/**
-	 * @param displayName the displayName to set
-	 */
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
 	}
 }

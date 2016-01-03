@@ -36,4 +36,9 @@
 		<property name="template" ref="queryDslJdbcTemplate"/>
 		<property name="currentUserService" ref="currentUserService" />
 	</bean>
+
+	<bean id="userRepository" class="com.turalt.openmentor.repository.impl.SimpleCourseInfoRepository">
+		<property name="template" ref="queryDslJdbcTemplate"/>
+		<property name="currentUserService" ref="currentUserService" />
+	</bean>
 </beans>
