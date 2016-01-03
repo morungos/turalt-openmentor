@@ -36,6 +36,11 @@
 	            		<lookup-method name="create" bean="tutorListResource" />
 	            	</bean>
 	            </entry>
+	        	<entry key="/users">
+	            	<bean class="org.restlet.ext.spring.SpringFinder">
+	            		<lookup-method name="create" bean="userListResource" />
+	            	</bean>
+	            </entry>
 	        </map>
 	    </property>
 	</bean>
@@ -50,6 +55,10 @@
 
 	<bean id="tutorListResource" class="com.turalt.openmentor.resource.TutorListResource" scope="prototype">
 		<property name="repository" ref="courseInfoRepository"/>
+	</bean>
+
+	<bean id="userListResource" class="com.turalt.openmentor.resource.UserListResource" scope="prototype">
+		<property name="repository" ref="userRepository"/>
 	</bean>
 
 </beans>

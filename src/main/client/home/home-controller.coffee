@@ -50,3 +50,16 @@ angular
         $scope.data = response
       .error (response) ->
         console.log "Error", response
+
+
+  .controller 'UsersController', Array '$scope', '$http', ($scope, $http) ->
+    'use strict'
+
+    $scope.data = undefined
+
+    $http
+      .get('/api/users')
+      .success (response) ->
+        $scope.data = response
+      .error (response) ->
+        console.log "Error", response
