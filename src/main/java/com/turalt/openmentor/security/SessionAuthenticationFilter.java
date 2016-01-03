@@ -197,7 +197,6 @@ public class SessionAuthenticationFilter extends AuthenticatingFilter {
      * @param response the outgoing ServletResponse.
      * @return <code>true</code> if the request is an HTTP <code>POST</code>, <code>false</code> otherwise.
      */
-    @SuppressWarnings({"UnusedDeclaration"})
     protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
         return (request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD);
     }

@@ -48,4 +48,50 @@ public class SimpleUserRepositoryTest {
 		Assert.assertThat(users, hasItem(hasProperty("username", equalTo("morag"))));
 	}
 
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetUsersOffset() {
+		
+		Pager pager = new Pager();
+		pager.setOffset(1);
+		List<User> users = userRepository.getUsers(pager);
+		Assert.assertEquals(2, users.size());
+		
+		Assert.assertThat(users, hasItem(hasProperty("username", equalTo("stuart"))));
+		Assert.assertThat(users, hasItem(hasProperty("username", equalTo("morag"))));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetUsersLimit() {
+		
+		Pager pager = new Pager();
+		pager.setLimit(1);
+		pager.setOffset(1);
+		List<User> users = userRepository.getUsers(pager);
+		Assert.assertEquals(1, users.size());
+		
+		Assert.assertThat(users, hasItem(hasProperty("username", equalTo("morag"))));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetUser() {
+		
+		User user = userRepository.findUser("admin");
+		Assert.assertNotNull(user);
+		Assert.assertThat(user, hasProperty("username", equalTo("admin")));
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetMissingUser() {
+		
+		User user = userRepository.findUser("cashmere");
+		Assert.assertNull(user);
+	}
 }
